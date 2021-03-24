@@ -1,0 +1,17 @@
+{
+  name: 'Demo Deck',
+  layers: [
+//    {
+//      type: 'Text',
+//      text: '{{title}}'
+//    },
+    {
+      type: 'Rect',
+      left: 100,
+      top: 100,
+      fill: 'red',
+      width: 20,
+      height: 20
+    }
+  ]
+}
