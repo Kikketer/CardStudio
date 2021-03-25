@@ -12,7 +12,7 @@ import bg from '../images/repeated-square.png'
 import cardOverlay from '../images/usgamedeck.png'
 
 const config =
-  '{"name":"Demo Deck","layers":[{"type":"Rect","left":100,"top":100,"fill":"red","width":20,"height":20}]}'
+  '{"name":"Demo Deck","layers":[{"type":"Rect","left":100,"top":100,"fill":"red","width":20,"height":20},{"type":"Image","left":100,"top":100}]}'
 
 const Container = styled.main`
   background-image: url(${bg});
@@ -38,16 +38,23 @@ const Editor = () => {
 
   const renderCard = () => {
     const conf = json5.parse(config)
+    console.log('Config ', conf)
     conf.layers.forEach((layer: any) => {
       const { type, ...options } = layer
-      const thing = new fabric[type](options)
-      canvas.current.add(thing)
+      // Images are different...
+      console.log('rendering layer ', type)
+      if (type.match(/^image$/i)) {
+        fabric.Image.fromURL('./test.png', (img) => {
+          canvas.current.renderAll()
+        })
+      } else {
+        const thing = new fabric[type](options)
+        canvas.current.add(thing)
+      }
     })
   }
 
   useEffect(() => {
-    fabric.DPI = 300
-
     canvas.current = new fabric.Canvas('the-card', {
       margin: 'auto',
       backgroundColor: 'white',
@@ -79,6 +86,25 @@ const Editor = () => {
     ipcRenderer.send('generate-card', highRes)
   }
 
+  const getFiles = async () => {
+    console.log('Do it...')
+    try {
+      const result = await ipcRenderer.invoke('app:get-files')
+      console.log(result)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const openFile = async () => {
+    try {
+      const result = await ipcRenderer.invoke('app:on-fs-dialog-open')
+      console.log(result)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <Container>
       <Edtr>
@@ -90,6 +116,12 @@ const Editor = () => {
         </button>
         <button style={{ margin: 0 }} type="button" onClick={generateCards}>
           Gen
+        </button>
+        <button style={{ margin: 0 }} type="button" onClick={getFiles}>
+          Get Files
+        </button>
+        <button style={{ margin: 0 }} type="button" onClick={openFile}>
+          Open Project
         </button>
       </div>
     </Container>

@@ -12,10 +12,13 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import path from 'path'
 import fs from 'fs'
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, dialog } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
 import MenuBuilder from './menu'
+import { openFile, addFiles, deleteFile, getFiles, watchFiles } from './io'
+
+let currentProjectDirectory: string
 
 export default class AppUpdater {
   constructor() {
@@ -129,3 +132,69 @@ ipcMain.on('generate-card', (_event, base64String) => {
   const base64Image = base64String.split(';base64,').pop()
   fs.writeFileSync(path.resolve(__dirname, 'out.png'), base64Image, { encoding: 'base64' })
 })
+
+/** *******File Handling************** */
+// https://medium.com/jspoint/working-with-files-i-o-in-an-electron-application-b4d2de403f54
+
+// return list of files
+ipcMain.handle('app:get-files', () => {
+  // TODO get the project directory setup based on the project file initially loaded
+  if (currentProjectDirectory) {
+    return getFiles(currentProjectDirectory || '')
+  }
+  return []
+})
+
+// listen to file(s) add event
+ipcMain.handle('app:on-file-add', (_event, files = []) => {
+  addFiles(files)
+})
+
+// open filesystem dialog to choose files
+ipcMain.handle('app:on-fs-dialog-open', (): { name: string; path: string } | null => {
+  const files = dialog.showOpenDialogSync({
+    properties: ['openFile'],
+  })
+
+  if (files?.length) {
+    currentProjectDirectory = path.parse(files[0]).dir
+
+    return {
+      name: path.parse(files[0]).base,
+      path: files[0],
+    }
+  }
+
+  return null
+
+  // addFiles(
+  //   files?.map((filepath) => {
+  //     return {
+  //       name: path.parse(filepath).base,
+  //       path: filepath,
+  //     }
+  //   })
+  // )
+})
+
+/*-----*/
+
+// listen to file delete event
+ipcMain.on('app:on-file-delete', (_event, file) => {
+  deleteFile(file.filepath)
+})
+
+// listen to file open event
+// Opens the file on the OS with the default OS app
+ipcMain.on('app:on-file-open', (_event, file) => {
+  openFile(file.filepath)
+})
+
+// listen to file copy event
+// Not needed, dragging files out of the app and onto the OS
+// ipcMain.on('app:on-file-copy', (event, file) => {
+//   event.sender.startDrag({
+//     file: file.filepath,
+//     icon: path.resolve(__dirname, '../resources/paper.png'),
+//   })
+// })
