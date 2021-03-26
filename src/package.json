@@ -9,7 +9,6 @@
   },
   "license": "MIT",
   "dependencies": {
-
     "fabric-browseronly": "^3.5.0"
   },
   "devDependencies": {}
