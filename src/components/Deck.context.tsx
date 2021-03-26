@@ -17,7 +17,12 @@ export declare interface DeckContextProps {
 const DeckContext = React.createContext({} as DeckContextProps)
 
 const DeckProvider = ({ children }: ActionProps) => {
-  const canvas = useRef<fabric.Canvas>(null)
+  const canvas = useRef<fabric.Canvas>(
+    new fabric.Canvas('the-card', {
+      margin: 'auto',
+      backgroundColor: 'white',
+    })
+  )
   // TODO this is the layer where we will hold onto the deck information
   const [layers, setLayers] = useState<Layer[]>([])
   const [zoomFactor, setZoomFactor] = useState(0.5)
@@ -25,10 +30,6 @@ const DeckProvider = ({ children }: ActionProps) => {
   useEffect(() => {
     // Setup the canvas
     // TODO unload and rerender when card changes
-    canvas.current = new fabric.Canvas('the-card', {
-      margin: 'auto',
-      backgroundColor: 'white',
-    })
   }, [])
 
   useEffect(() => {
