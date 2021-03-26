@@ -8,6 +8,9 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+
+    "fabric-browseronly": "^3.5.0"
+  },
   "devDependencies": {}
 }
