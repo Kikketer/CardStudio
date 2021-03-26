@@ -11,8 +11,8 @@ const config =
   '{"name":"Demo Deck","layers":[{"type":"Rect","left":100,"top":100,"fill":"red","width":20,"height":20},{"type":"Image","left":100,"top":100}]}'
 
 const Container = styled.main`
-  // background-image: url(${bg});
-  // background-repeat: repeat;
+  background-image: url(${bg});
+  background-repeat: repeat;
   height: 100%;
   display: grid;
   grid-template-rows: 1fr 50px;
