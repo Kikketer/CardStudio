@@ -1,4 +1,4 @@
-import React, { useContext, ReactNode, useState, useRef, useEffect } from 'react'
+import React, { useContext, ReactNode, useState, useRef, useEffect, Dispatch, SetStateAction } from 'react'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { fabric } from 'fabric-browseronly'
@@ -12,6 +12,8 @@ export declare interface DeckContextProps {
   layers: Layer[]
   canvas: fabric.Canvas | null
   zoomFactor: number
+  projectPath: string
+  setProjectPath: Dispatch<SetStateAction<string>>
 }
 
 const DeckContext = React.createContext({} as DeckContextProps)
@@ -26,6 +28,7 @@ const DeckProvider = ({ children }: ActionProps) => {
   // TODO this is the layer where we will hold onto the deck information
   const [layers, setLayers] = useState<Layer[]>([])
   const [zoomFactor, setZoomFactor] = useState(0.5)
+  const [projectPath, setProjectPath] = useState('')
 
   useEffect(() => {
     // Setup the canvas
@@ -39,7 +42,11 @@ const DeckProvider = ({ children }: ActionProps) => {
     canvas.current.setZoom(zoomFactor)
   }, [zoomFactor])
 
-  return <DeckContext.Provider value={{ layers, canvas: canvas.current, zoomFactor }}>{children}</DeckContext.Provider>
+  return (
+    <DeckContext.Provider value={{ layers, canvas: canvas.current, zoomFactor, projectPath, setProjectPath }}>
+      {children}
+    </DeckContext.Provider>
+  )
 }
 
 const useDeck = (): DeckContextProps => {

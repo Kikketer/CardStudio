@@ -274,5 +274,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "msw": {
+    "workerDirectory": "src"
   }
 }

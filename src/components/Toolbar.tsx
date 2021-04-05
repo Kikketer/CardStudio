@@ -22,7 +22,7 @@ const Aside = styled.aside`
 `
 
 const Toolbar = () => {
-  const { zoomFactor, canvas } = useDeck()
+  const { zoomFactor, canvas, setProjectPath } = useDeck()
 
   // TODO Move these into a more utility function
   const addRect = () => {
@@ -57,7 +57,9 @@ const Toolbar = () => {
   const openFile = async () => {
     try {
       const result = await ipcRenderer.invoke('app:on-fs-dialog-open')
-      console.log(result)
+      const projectPath = result.path.substr(0, result.path.indexOf(result.name))
+      console.log('Path: ', projectPath)
+      setProjectPath(projectPath)
     } catch (err) {
       console.error(err)
     }
