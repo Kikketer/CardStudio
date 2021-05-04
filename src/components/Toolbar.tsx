@@ -7,6 +7,7 @@ import { fabric } from 'fabric-browseronly'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { changeDpiDataUrl } from 'changedpi'
+import { Button } from '@adobe/react-spectrum'
 import { useDeck } from './Deck.context'
 
 const Aside = styled.aside`
@@ -67,26 +68,10 @@ const Toolbar = () => {
 
   return (
     <Aside>
-      <button type="button">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="devfont devfont-cursor"
-        >
-          <path d="M10 20L4 4l16 6-7 3-3 7z" />
-          <path d="M13 13l7 7" />
-        </svg>
-      </button>
-      <button type="button" onClick={addRect}>
+      <Button variant="primary">Arrow</Button>
+      <Button variant="primary" onPress={addRect}>
         Add
-      </button>
+      </Button>
       <button type="button" onClick={generateCards}>
         Gen
       </button>

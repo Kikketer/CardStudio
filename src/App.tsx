@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
+import { Provider as SpectrumProvider, defaultTheme } from '@adobe/react-spectrum'
 import Editor from './components/Editor'
 import Toolbar from './components/Toolbar'
 import Detailbar from './components/Detailbar'
@@ -14,13 +15,15 @@ const Grid = styled.div`
 
 const Frame = () => {
   return (
-    <DeckProvider>
-      <Grid>
-        <Toolbar />
-        <Editor />
-        <Detailbar />
-      </Grid>
-    </DeckProvider>
+    <SpectrumProvider theme={defaultTheme}>
+      <DeckProvider>
+        <Grid>
+          <Toolbar />
+          <Editor />
+          <Detailbar />
+        </Grid>
+      </DeckProvider>
+    </SpectrumProvider>
   )
 }
 

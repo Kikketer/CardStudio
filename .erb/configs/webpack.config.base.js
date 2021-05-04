@@ -2,9 +2,9 @@
  * Base webpack config used across other specific configs
  */
 
-import path from 'path';
-import webpack from 'webpack';
-import { dependencies as externals } from '../../src/package.json';
+import path from 'path'
+import webpack from 'webpack'
+import { dependencies as externals } from '../../src/package.json'
 
 export default {
   externals: [...Object.keys(externals || {})],
@@ -35,7 +35,7 @@ export default {
    */
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '../src'), 'node_modules'],
+    modules: [path.join(__dirname, '../../src'), 'node_modules'],
   },
 
   plugins: [
@@ -43,4 +43,4 @@ export default {
       NODE_ENV: 'production',
     }),
   ],
-};
+}
