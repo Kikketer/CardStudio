@@ -94,24 +94,24 @@ export default merge(baseConfig, {
       //     },
       //   ],
       // },
-      // // SASS support - compile all .global.scss files and pipe it to style.css
-      // {
-      //   test: /\.global\.(scss|sass)$/,
-      //   use: [
-      //     {
-      //       loader: 'style-loader',
-      //     },
-      //     {
-      //       loader: 'css-loader',
-      //       options: {
-      //         sourceMap: true,
-      //       },
-      //     },
-      //     {
-      //       loader: 'sass-loader',
-      //     },
-      //   ],
-      // },
+      // SASS support - compile all .global.scss files and pipe it to style.css
+      {
+        test: /(scss|sass)$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+          },
+        ],
+      },
       // // SASS support - compile all other .scss files and pipe it to style.css
       // {
       //   test: /^((?!\.global).)*\.(scss|sass)$/,

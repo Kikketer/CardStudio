@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { ipcRenderer } from 'electron'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -7,23 +7,39 @@ import { fabric } from 'fabric-browseronly'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { changeDpiDataUrl } from 'changedpi'
-import { Button } from '@adobe/react-spectrum'
+import { Button, View } from '@adobe/react-spectrum'
+import Select from '@spectrum-icons/workflow/Select'
+import Save from '@spectrum-icons/workflow/SaveFloppy'
+import Open from '@spectrum-icons/workflow/FolderOpen'
+import Add from '@spectrum-icons/workflow/AddCircle'
+import Generate from '@spectrum-icons/workflow/ExperienceExport'
 import { useDeck } from './Deck.context'
+
+type ToolbarButtonProps = {
+  active: boolean
+  children: ReactNode
+}
 
 const Aside = styled.aside`
   height: 100%;
-  display: grid;
-  grid-template-rows: 50px;
   overflow-y: scroll;
-  background: #656669;
 
   button {
     border-radius: 0;
   }
 `
 
+const ToolbarButton = ({ active, children, onPress }: ToolbarButtonProps & any) => {
+  return (
+    <Button variant={active ? 'cta' : 'primary'} width={50} minWidth={50} isQuiet onPress={onPress}>
+      {children}
+    </Button>
+  )
+}
+
 const Toolbar = () => {
   const { zoomFactor, canvas, setProjectPath } = useDeck()
+  const [activeTool, setActiveTool] = useState<string>('')
 
   // TODO Move these into a more utility function
   const addRect = () => {
@@ -67,21 +83,24 @@ const Toolbar = () => {
   }
 
   return (
-    <Aside>
-      <Button variant="primary">Arrow</Button>
-      <Button variant="primary" onPress={addRect}>
-        Add
-      </Button>
-      <button type="button" onClick={generateCards}>
-        Gen
-      </button>
-      <button type="button" onClick={getFiles}>
-        Get Files
-      </button>
-      <button type="button" onClick={openFile}>
-        Open Project
-      </button>
-    </Aside>
+    <View backgroundColor="default" elementType="aside">
+      <ToolbarButton onPress={openFile}>
+        <Open />
+      </ToolbarButton>
+      <ToolbarButton>
+        <Save />
+      </ToolbarButton>
+      <ToolbarButton active={activeTool === 'select'}>
+        <Select />
+      </ToolbarButton>
+      <ToolbarButton onPress={addRect}>
+        <Add />
+      </ToolbarButton>
+      <ToolbarButton onPress={generateCards}>
+        <Generate />
+      </ToolbarButton>
+      {/* <ToolbarButton onPress={getFiles}>Get Files</ToolbarButton> */}
+    </View>
   )
 }
 

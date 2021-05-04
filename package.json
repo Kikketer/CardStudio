@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "CardStudio",
+    "appId": "com.kikketer.cardstudio",
     "files": [
       "dist/",
       "node_modules/",
@@ -224,6 +224,7 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.9.0",
+    "@spectrum-icons/workflow": "^3.2.0",
     "changedpi": "^1.0.4",
     "chokidar": "^3.5.1",
     "devfont": "^3.1.1",
