@@ -223,8 +223,10 @@
     "yarn-deduplicate": "^3.1.0"
   },
   "dependencies": {
-    "@adobe/react-spectrum": "^3.9.0",
-    "@spectrum-icons/workflow": "^3.2.0",
+    "@carbon/icons-react": "10.22.0",
+    "carbon-components": "10.25.0",
+    "carbon-components-react": "7.25.0",
+    "carbon-icons": "7.0.7",
     "changedpi": "^1.0.4",
     "chokidar": "^3.5.1",
     "devfont": "^3.1.1",

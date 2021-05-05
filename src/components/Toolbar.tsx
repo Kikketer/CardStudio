@@ -7,21 +7,17 @@ import { fabric } from 'fabric-browseronly'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { changeDpiDataUrl } from 'changedpi'
-import { Button, View } from '@adobe/react-spectrum'
-import Select from '@spectrum-icons/workflow/Select'
-import Save from '@spectrum-icons/workflow/SaveFloppy'
-import Open from '@spectrum-icons/workflow/FolderOpen'
-import Add from '@spectrum-icons/workflow/AddCircle'
-import Generate from '@spectrum-icons/workflow/ExperienceExport'
+import { Button } from 'carbon-components-react'
 import { useDeck } from './Deck.context'
 
 type ToolbarButtonProps = {
-  active: boolean
+  active?: boolean
   children: ReactNode
 }
 
 const Aside = styled.aside`
   height: 100%;
+  width: 100%;
   overflow-y: scroll;
 
   button {
@@ -29,9 +25,9 @@ const Aside = styled.aside`
   }
 `
 
-const ToolbarButton = ({ active, children, onPress }: ToolbarButtonProps & any) => {
+const ToolbarButton = ({ active, children, onClick }: ToolbarButtonProps & any) => {
   return (
-    <Button variant={active ? 'cta' : 'primary'} width={50} minWidth={50} isQuiet onPress={onPress}>
+    <Button type="button" kind={active ? 'secondary' : 'ghost'} onClick={onClick}>
       {children}
     </Button>
   )
@@ -83,24 +79,16 @@ const Toolbar = () => {
   }
 
   return (
-    <View backgroundColor="default" elementType="aside">
-      <ToolbarButton onPress={openFile}>
-        <Open />
+    <Aside>
+      <ToolbarButton onClick={openFile}>A</ToolbarButton>
+      <ToolbarButton active={activeTool === 'test'} onClick={() => setActiveTool('test')}>
+        B
       </ToolbarButton>
-      <ToolbarButton>
-        <Save />
-      </ToolbarButton>
-      <ToolbarButton active={activeTool === 'select'}>
-        <Select />
-      </ToolbarButton>
-      <ToolbarButton onPress={addRect}>
-        <Add />
-      </ToolbarButton>
-      <ToolbarButton onPress={generateCards}>
-        <Generate />
-      </ToolbarButton>
+      <ToolbarButton active={activeTool === 'select'}>C</ToolbarButton>
+      <ToolbarButton onClick={addRect}>D</ToolbarButton>
+      <ToolbarButton onClick={generateCards}>E</ToolbarButton>
       {/* <ToolbarButton onPress={getFiles}>Get Files</ToolbarButton> */}
-    </View>
+    </Aside>
   )
 }
 
