@@ -8,7 +8,9 @@ import { fabric } from 'fabric-browseronly'
 // @ts-ignore
 import { changeDpiDataUrl } from 'changedpi'
 import { Button } from 'carbon-components-react'
+import { Cursor_132 } from '@carbon/icons-react'
 import { useDeck } from './Deck.context'
+import { openFile } from './NativeUtils'
 
 type ToolbarButtonProps = {
   active?: boolean
@@ -25,11 +27,16 @@ const Aside = styled.aside`
   }
 `
 
-const ToolbarButton = ({ active, children, onClick }: ToolbarButtonProps & any) => {
+const ToolbarButton = ({ active, renderIcon, onClick, iconDescription }: ToolbarButtonProps & any) => {
   return (
-    <Button type="button" kind={active ? 'secondary' : 'ghost'} onClick={onClick}>
-      {children}
-    </Button>
+    <Button
+      type="button"
+      kind={active ? 'secondary' : 'ghost'}
+      onClick={onClick}
+      renderIcon={renderIcon}
+      hasIconOnly
+      iconDescription={iconDescription}
+    />
   )
 }
 
@@ -57,36 +64,23 @@ const Toolbar = () => {
     ipcRenderer.send('generate-card', highRes)
   }
 
-  const getFiles = async () => {
-    console.log('Do it...')
-    try {
-      const result = await ipcRenderer.invoke('app:get-files')
-      console.log(result)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const openFile = async () => {
-    try {
-      const result = await ipcRenderer.invoke('app:on-fs-dialog-open')
-      const projectPath = result.path.substr(0, result.path.indexOf(result.name))
-      console.log('Path: ', projectPath)
-      setProjectPath(projectPath)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   return (
     <Aside>
-      <ToolbarButton onClick={openFile}>A</ToolbarButton>
-      <ToolbarButton active={activeTool === 'test'} onClick={() => setActiveTool('test')}>
-        B
-      </ToolbarButton>
-      <ToolbarButton active={activeTool === 'select'}>C</ToolbarButton>
-      <ToolbarButton onClick={addRect}>D</ToolbarButton>
-      <ToolbarButton onClick={generateCards}>E</ToolbarButton>
+      <ToolbarButton
+        active={activeTool === 'cursor'}
+        onClick={() => setActiveTool('cursor')}
+        renderIcon={Cursor_132}
+        iconDescription="Select"
+      />
+      <ToolbarButton
+        active={activeTool === 'test'}
+        renderIcon={Cursor_132}
+        onClick={() => setActiveTool('test')}
+        iconDescription="Select"
+      />
+      <ToolbarButton active={activeTool === 'select'} renderIcon={Cursor_132} />
+      <ToolbarButton onClick={addRect} renderIcon={Cursor_132} />
+      <ToolbarButton onClick={generateCards} renderIcon={Cursor_132} />
       {/* <ToolbarButton onPress={getFiles}>Get Files</ToolbarButton> */}
     </Aside>
   )
