@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import { map } from 'lodash'
 import { useDeck } from './Deck.context'
-import { useEditor } from './Editor.context'
 
 const List = styled.ul`
   list-style: none;
@@ -20,7 +20,7 @@ const Line = styled.div`
 `
 
 const LayerSummary = () => {
-  const { layers } = useDeck()
+  const { project } = useDeck()
 
   const onEditLayer = () => {
     // TODO Show modal
@@ -29,7 +29,7 @@ const LayerSummary = () => {
   return (
     <>
       <List>
-        {layers?.map((layer) => (
+        {map(project?.layers, (layer: Layer) => (
           <Item key={layer.id}>
             <button type="button" onClick={onEditLayer}>
               {layer.type}

@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import json5 from 'json5'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { fabric } from 'fabric-browseronly'
 import bg from '../images/grid.svg'
 import cardOverlay from '../images/usgamedeck.png'
 import { useDeck } from './Deck.context'
-
-const config =
-  '{"name":"Demo Deck","layers":[{"type":"Rect","left":100,"top":100,"fill":"red","width":20,"height":20},{"type":"Image","left":100,"top":100,"path":"art/Tornado.png"}]}'
+import { drawCard } from './CardGenUtils'
 
 const Container = styled.main`
   background-image: url(${bg});
@@ -25,35 +22,10 @@ const Container = styled.main`
 const StyledEditor = styled.div``
 
 const Editor = () => {
-  const { projectPath } = useDeck()
+  const { project } = useDeck()
   const editor = useRef(null)
   const canvas = useRef<fabric.Canvas>(null)
   const zoomFactor = 0.5
-
-  const renderCard = () => {
-    const conf = json5.parse(config)
-    console.log('Config ', conf)
-    conf.layers.forEach((layer: any) => {
-      const { type, ...options } = layer
-      // Images are different...
-      console.log('rendering layer ', type)
-      if (type.match(/^image$/i)) {
-        console.log('Rendering image ', options)
-        // TODO Get the msw to catch any image asks and turn them into messages
-        fabric.Image.fromURL(
-          `file://${projectPath}/${options.path}`,
-          (oImg: any) => {
-            canvas.current.add(oImg)
-            canvas.current.renderAll()
-          },
-          options
-        )
-      } else {
-        const thing = new fabric[type](options)
-        canvas.current.add(thing)
-      }
-    })
-  }
 
   useEffect(() => {
     canvas.current = new fabric.Canvas('the-card', {
@@ -67,20 +39,20 @@ const Editor = () => {
   }, [])
 
   useEffect(() => {
-    console.log('Project path has changed ', projectPath)
-    if (projectPath) {
-      // canvas.current = new fabric.Canvas('the-card', {
-      //   margin: 'auto',
-      //   backgroundColor: 'white',
-      //   height: 1124 * zoomFactor,
-      //   width: 750 * zoomFactor,
-      // })
-      // canvas.current.setBackgroundImage(cardOverlay, () => canvas.current.renderAll())
-      // canvas.current.setZoom(zoomFactor)
+    console.log('Project path has changed ', project)
+    // canvas.current = new fabric.Canvas('the-card', {
+    //   margin: 'auto',
+    //   backgroundColor: 'white',
+    //   height: 1124 * zoomFactor,
+    //   width: 750 * zoomFactor,
+    // })
+    // canvas.current.setBackgroundImage(cardOverlay, () => canvas.current.renderAll())
+    // canvas.current.setZoom(zoomFactor)
 
-      renderCard()
+    if (project) {
+      drawCard(project, canvas.current)
     }
-  }, [projectPath, renderCard])
+  }, [project, drawCard])
 
   return (
     <Container>

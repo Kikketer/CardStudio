@@ -237,6 +237,8 @@
     "fs-extra": "^9.1.0",
     "history": "^5.0.0",
     "json5": "^2.2.0",
+    "lodash": "^4.17.21",
+    "p-series": "^2.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

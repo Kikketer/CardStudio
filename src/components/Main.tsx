@@ -3,7 +3,6 @@
  */
 
 import React, { ReactNode } from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Header, HeaderName, HeaderContainer, Button } from 'carbon-components-react'
 import { Folder32, Save32 } from '@carbon/icons-react'
@@ -11,7 +10,7 @@ import Toolbar from './Toolbar'
 import Editor from './Editor'
 import DetailBar from './Detailbar'
 import { useDeck } from './Deck.context'
-import { openFile } from './NativeUtils'
+import { openProject } from './NativeUtils'
 
 const Grid = styled.div`
   display: grid;
@@ -21,10 +20,15 @@ const Grid = styled.div`
 `
 
 const Main = (): JSX.Element => {
-  const { setProjectPath } = useDeck()
+  const { loadProject } = useDeck()
 
-  const openProject = () => {
-    openFile(setProjectPath)
+  const onSaveProject = () => {
+    // TODO
+    console.log('Saving Project')
+  }
+
+  const onOpenProject = () => {
+    openProject(loadProject)
   }
 
   return (
@@ -40,14 +44,14 @@ const Main = (): JSX.Element => {
               renderIcon={Save32}
               hasIconOnly
               iconDescription="save project"
-              onClick={openProject}
+              onClick={onSaveProject}
             />
             <Button
               kind="secondary"
               renderIcon={Folder32}
               hasIconOnly
               iconDescription="open project"
-              onClick={openProject}
+              onClick={onOpenProject}
             />
           </Header>
         )}

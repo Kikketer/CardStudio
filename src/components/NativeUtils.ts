@@ -3,13 +3,13 @@
  */
 
 import { ipcRenderer } from 'electron'
+import { OpenCallback } from './Types'
 
-const openFile = async (setProjectPath: (path: string) => void) => {
+const openProject = async (callback: (T: OpenCallback) => void) => {
   try {
     const result = await ipcRenderer.invoke('app:on-fs-dialog-open')
     const projectPath = result.path.substr(0, result.path.indexOf(result.name))
-    console.log('Path: ', projectPath)
-    setProjectPath(projectPath)
+    callback({ path: projectPath, content: result.content, name: result.name })
   } catch (err) {
     console.error(err)
   }
@@ -25,4 +25,4 @@ const getFiles = async () => {
   }
 }
 
-export { openFile, getFiles }
+export { openProject, getFiles }

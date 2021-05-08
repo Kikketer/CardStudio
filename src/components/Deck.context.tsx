@@ -2,18 +2,13 @@ import React, { useContext, ReactNode, useState, useRef, useEffect, Dispatch, Se
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { fabric } from 'fabric-browseronly'
+import json5 from 'json5'
+import { reverse } from 'lodash'
 import cardOverlay from '../images/usgamedeck.png'
+import { DeckContextProps, Project, LoadProjectProps } from './Types'
 
 export declare interface ActionProps {
   children: ReactNode
-}
-
-export declare interface DeckContextProps {
-  layers: Layer[]
-  canvas: fabric.Canvas | null
-  zoomFactor: number
-  projectPath: string
-  setProjectPath: Dispatch<SetStateAction<string>>
 }
 
 const DeckContext = React.createContext({} as DeckContextProps)
@@ -28,7 +23,8 @@ const DeckProvider = ({ children }: ActionProps) => {
   // TODO this is the layer where we will hold onto the deck information
   const [layers, setLayers] = useState<Layer[]>([])
   const [zoomFactor, setZoomFactor] = useState(0.5)
-  const [projectPath, setProjectPath] = useState('')
+  // const [projectPath, setProjectPath] = useState('')
+  const [project, setProject] = useState<Project | undefined>()
 
   useEffect(() => {
     // Setup the canvas
@@ -42,8 +38,21 @@ const DeckProvider = ({ children }: ActionProps) => {
     canvas.current.setZoom(zoomFactor)
   }, [zoomFactor])
 
+  const loadProject = ({ path, content }: LoadProjectProps) => {
+    setProject(undefined)
+
+    if (!path || !content) return
+
+    const p: Project = json5.parse(content)
+    p.path = path
+    // Reverse the layers so we can simply use .map to read through them
+    // NOTE: the JSON5 has "layers on top are on top", rendering them means top layer is last
+    // reverse(p.layers)
+    setProject(p)
+  }
+
   return (
-    <DeckContext.Provider value={{ layers, canvas: canvas.current, zoomFactor, projectPath, setProjectPath }}>
+    <DeckContext.Provider value={{ layers, canvas: canvas.current, zoomFactor, loadProject, project }}>
       {children}
     </DeckContext.Provider>
   )

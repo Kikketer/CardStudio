@@ -151,7 +151,7 @@ ipcMain.handle('app:on-file-add', (_event, files = []) => {
 })
 
 // open filesystem dialog to choose files
-ipcMain.handle('app:on-fs-dialog-open', (): { name: string; path: string } | null => {
+ipcMain.handle('app:on-fs-dialog-open', (): { name: string; path: string; content: string } | null => {
   const files = dialog.showOpenDialogSync({
     properties: ['openFile'],
   })
@@ -159,9 +159,13 @@ ipcMain.handle('app:on-fs-dialog-open', (): { name: string; path: string } | nul
   if (files?.length) {
     currentProjectDirectory = path.parse(files[0]).dir
 
+    // Read the file and return it as a string to the renderer
+    const content = fs.readFileSync(files[0], 'utf-8')
+
     return {
       name: path.parse(files[0]).base,
       path: files[0],
+      content,
     }
   }
 
