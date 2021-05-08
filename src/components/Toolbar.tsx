@@ -8,7 +8,7 @@ import { fabric } from 'fabric-browseronly'
 // @ts-ignore
 import { changeDpiDataUrl } from 'changedpi'
 import { Button } from 'carbon-components-react'
-import { Cursor_132 } from '@carbon/icons-react'
+import { Cursor_132, TextCreation32, Image32 } from '@carbon/icons-react'
 import { useDeck } from './Deck.context'
 
 type ToolbarButtonProps = {
@@ -75,14 +75,19 @@ const Toolbar = () => {
         iconDescription="Select"
       />
       <ToolbarButton
-        active={activeTool === 'test'}
-        renderIcon={Cursor_132}
-        onClick={() => setActiveTool('test')}
-        iconDescription="Select"
+        active={activeTool === 'text'}
+        renderIcon={TextCreation32}
+        onClick={() => setActiveTool('text')}
+        iconDescription="Text"
       />
-      <ToolbarButton active={activeTool === 'select'} renderIcon={Cursor_132} />
-      <ToolbarButton onClick={addRect} renderIcon={Cursor_132} />
-      <ToolbarButton onClick={generateCards} renderIcon={Cursor_132} />
+      <ToolbarButton
+        active={activeTool === 'image'}
+        renderIcon={Image32}
+        onClick={() => setActiveTool('image')}
+        iconDescription="Image"
+      />
+      {/* <ToolbarButton onClick={addRect} renderIcon={Cursor_132} /> */}
+      {/* <ToolbarButton onClick={generateCards} renderIcon={Cursor_132} /> */}
       {/* <ToolbarButton onPress={getFiles}>Get Files</ToolbarButton> */}
     </Aside>
   )
