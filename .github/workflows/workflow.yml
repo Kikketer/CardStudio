@@ -13,4 +13,4 @@ jobs:
       - uses: bahmutov/npm-install@HEAD
         with:
           install-command: yarn --frozen-lockfile --silent
-      - run: yarn test
+      - run: yarn build
