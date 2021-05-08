@@ -25,4 +25,4 @@ const getFiles = async () => {
   }
 }
 
-export { openFile }
+export { openFile, getFiles }

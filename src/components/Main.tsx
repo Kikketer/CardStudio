@@ -63,8 +63,4 @@ const Main = (): JSX.Element => {
 
 Main.displayName = 'Main'
 
-Main.propTypes = {
-  children: PropTypes.any,
-}
-
 export default Main

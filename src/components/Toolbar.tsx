@@ -10,11 +10,9 @@ import { changeDpiDataUrl } from 'changedpi'
 import { Button } from 'carbon-components-react'
 import { Cursor_132 } from '@carbon/icons-react'
 import { useDeck } from './Deck.context'
-import { openFile } from './NativeUtils'
 
 type ToolbarButtonProps = {
   active?: boolean
-  children: ReactNode
 }
 
 const Aside = styled.aside`
@@ -40,8 +38,12 @@ const ToolbarButton = ({ active, renderIcon, onClick, iconDescription }: Toolbar
   )
 }
 
+ToolbarButton.defaultProps = {
+  active: false,
+}
+
 const Toolbar = () => {
-  const { zoomFactor, canvas, setProjectPath } = useDeck()
+  const { zoomFactor, canvas } = useDeck()
   const [activeTool, setActiveTool] = useState<string>('')
 
   // TODO Move these into a more utility function
