@@ -21,9 +21,9 @@ const selectOptions = {
  * @returns Promise<void>
  */
 const addImage = (projectPath: string, imagePath?: string, canvas?: fabric.Canvas, options?: Layer) => {
-  if (!projectPath || !imagePath) return
+  if (!projectPath || !imagePath) return Promise.resolve()
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve: () => void) => {
     fabric.Image.fromURL(
       `file://${projectPath}${imagePath}`,
       (oImg: any) => {
