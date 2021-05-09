@@ -21,14 +21,14 @@ const Detailbar = () => {
     <Aside>
       {project?.layers?.length && (
         <>
-          <ButtonSet>
-            <Button
-              kind={isEditingMaster ? 'secondary' : 'primary'}
-              onClick={() => setIsEditingMaster(!isEditingMaster)}
-            >
-              {label} Master
-            </Button>
-          </ButtonSet>
+          {/* <ButtonSet> */}
+          {/*  <Button */}
+          {/*    kind={isEditingMaster ? 'secondary' : 'primary'} */}
+          {/*    onClick={() => setIsEditingMaster(!isEditingMaster)} */}
+          {/*  > */}
+          {/*    {label} Master */}
+          {/*  </Button> */}
+          {/* </ButtonSet> */}
           {project?.cards?.length && (
             <Select id="cards" labelText="Preview">
               {project.cards.map((card) => (

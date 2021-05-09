@@ -15,8 +15,10 @@ import { openProject } from './NativeUtils'
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 50px 1fr 300px;
-  height: calc(100% - 48px);
-  margin-top: 48px;
+  //height: calc(100% - 48px);
+  //margin-top: 3rem;
+  margin-top: 3rem;
+  height: calc(100vh - 3rem);
 `
 
 const Main = (): JSX.Element => {

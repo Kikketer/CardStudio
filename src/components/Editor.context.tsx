@@ -23,6 +23,8 @@ const EditorProvider = ({ children }: EditorBase): JSX.Element => {
     }
   }, [activeLayer])
 
+  const setActiveLayerById = (id: string) => {}
+
   return (
     <EditorContext.Provider value={{ isEditingMaster, setIsEditingMaster, activeLayer, setActiveLayer }}>
       {children}

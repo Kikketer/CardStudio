@@ -3,6 +3,8 @@ import React, { useContext, ReactNode, useState, useRef, useEffect } from 'react
 // @ts-ignore
 import { fabric } from 'fabric-browseronly'
 import json5 from 'json5'
+import { find } from 'lodash'
+import { IEvent } from 'fabric/fabric-impl'
 import { DeckContextProps, Project, LoadProjectProps } from './Types'
 import { drawCard } from './CardGenUtils'
 
@@ -24,7 +26,15 @@ const DeckProvider = ({ children }: ActionProps) => {
       preserveObjectStacking: true,
       height: 1124 * zoomFactor,
       width: 750 * zoomFactor,
+      // "selection" is for dragging a select box
+      selectionLineWidth: 1,
+      selectionBorderColor: '#ff00ff',
     })
+
+    canvas.current.on('selection:created', (c: IEvent) => console.log('selection created---', c.target))
+    canvas.current.on('selection:updated', (c: IEvent) => console.log('selection updated---', c.target))
+    canvas.current.on('selection:cleared', (c: IEvent) => console.log('selection cleared---', c.target))
+    canvas.current.on('object:modified', (c: IEvent) => console.log('object updated---', c.target))
 
     // TODO set zoomFactor in a different useEffect
     canvas.current.setZoom(zoomFactor)
@@ -51,8 +61,22 @@ const DeckProvider = ({ children }: ActionProps) => {
     setProject(p)
   }
 
+  const selectLayerById = (id: string) => {
+    console.log('selecting layer ', id)
+    // const foundObject = find(canvas.current.getObjects(), { id })
+    const foundObject = canvas.current.getObjects().find((obj: any) => obj.id === id)
+    if (foundObject) {
+      // TODO Figure out why it won't show the selection: https://jsfiddle.net/Kikketer/ncgs784p/
+      // It's even firing the event...
+      canvas.current.setActiveObject(foundObject)
+      // discardActiveObject() << to deselect
+    }
+  }
+
   return (
-    <DeckContext.Provider value={{ project, zoomFactor, setZoomFactor, loadProject }}>{children}</DeckContext.Provider>
+    <DeckContext.Provider value={{ project, zoomFactor, setZoomFactor, loadProject, selectLayerById }}>
+      {children}
+    </DeckContext.Provider>
   )
 }
 

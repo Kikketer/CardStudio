@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { map } from 'lodash'
 import { Accordion, AccordionItem } from 'carbon-components-react'
+import { useForm } from 'react-hook-form'
 import { Layer as LayerType } from './Types'
 import { useDeck } from './Deck.context'
 import Layer from './Layer'
@@ -25,20 +26,31 @@ const Line = styled.div`
 
 const LayerSummary = () => {
   const { activeLayer, setActiveLayer } = useEditor()
-  const { project } = useDeck()
+  const { project, selectLayerById } = useDeck()
+  const { handleSubmit, register } = useForm()
 
   const makeLayerActive = (layer: LayerType) => {
     setActiveLayer(layer)
+    selectLayerById(layer.id)
+  }
+
+  const onSave = (data: any) => {
+    console.log('saving ', data)
   }
 
   return (
-    <List>
-      {map(project?.layers, (layer: LayerType) => (
-        <Accordion key={layer.id}>
-          <Layer layer={layer} onClick={makeLayerActive} active={activeLayer?.id === layer.id} />
-        </Accordion>
-      ))}
-    </List>
+    <form onSubmit={handleSubmit(onSave)}>
+      <List>
+        {map(project?.layers, (layer: LayerType) => (
+          <Accordion key={layer.id}>
+            <Layer layer={layer} onClick={makeLayerActive} active={activeLayer?.id === layer.id} register={register} />
+          </Accordion>
+        ))}
+      </List>
+      <button type="submit" style={{ display: 'none' }}>
+        Save
+      </button>
+    </form>
   )
 }
 

@@ -8,6 +8,12 @@ import { Layer, Project } from './Types'
 import { SUPPORTED_TYPES } from './constants'
 import cardOverlay from '../images/usgamedeck.png'
 
+const selectOptions = {
+  borderColor: 'purple',
+  cornerColor: 'purple',
+  transparentCorners: false,
+}
+
 /**
  * Fetch and add the image to the canvas, this will resolve when it's fully loaded and added
  *
@@ -21,10 +27,9 @@ const addImage = (projectPath: string, imagePath?: string, canvas?: fabric.Canva
     fabric.Image.fromURL(
       `file://${projectPath}${imagePath}`,
       (oImg: any) => {
-        canvas.add(oImg)
         resolve(canvas.add(oImg))
       },
-      options
+      { ...selectOptions, ...options }
     )
   })
 }
@@ -52,7 +57,7 @@ const drawCard = async (project: Project | undefined, canvas: fabric.Canvas | un
         return () => addImage(project.path, path, canvas, layer)
       }
 
-      const thing = new fabric[type](options)
+      const thing = new fabric[type]({ ...selectOptions, ...options })
       return () => canvas.add(thing)
     })
   )

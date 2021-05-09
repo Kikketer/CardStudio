@@ -19,6 +19,7 @@ export declare interface DeckContextProps {
   zoomFactor: number
   setZoomFactor: (factor: number) => void
   loadProject: (project: LoadProjectProps) => void
+  selectLayerById: (layerId: string) => void
 }
 
 export declare interface EditorContextProps {
@@ -44,6 +45,7 @@ export declare interface LayerItem {
   layer: Layer
   active?: boolean
   onClick?: (T: Layer) => void
+  register: (T: string) => void
 }
 
 export declare interface Card {
