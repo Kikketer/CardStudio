@@ -2,40 +2,11 @@
  * @author Chris Weed (chris@cjweed.com) 2021
  */
 import { fabric } from 'fabric-browseronly'
-import { forEach, reverse, clone } from 'lodash'
+import { reverse, clone, map } from 'lodash'
+import pSeries from 'p-series'
 import { Layer, Project } from './Types'
-
-export const drawCard = (project: Project, canvas: fabric.Canvas): void => {
-  if (!project) return
-
-  const reversedLayers = reverse(clone(project.layers))
-
-  forEach(reversedLayers, (layer: Layer) => {
-    const { type, path, ...options } = layer
-    // Images are different...
-    console.log('rendering layer ', type)
-    if (type.match(/^image$/i)) {
-      console.log('Rendering image ', options)
-      // fabric.Image.fromURL(
-      //   `file://${project.path}${options.path}`,
-      //   (oImg: any) => {
-      //     canvas.add(oImg)
-      //     canvas.renderAll()
-      //   },
-      //   options
-      // )
-    } else {
-      const thing = new fabric[type](options)
-      canvas.add(thing)
-    }
-  })
-}
-
-export const AddRect = (project: Project, canvas: fabric.Canvas) => {
-  // TODO
-}
-
-export const AddText = (project: Project, canvas: fabric.Canvas) => {}
+import { SUPPORTED_TYPES } from './constants'
+import cardOverlay from '../images/usgamedeck.png'
 
 /**
  * Fetch and add the image to the canvas, this will resolve when it's fully loaded and added
@@ -43,15 +14,52 @@ export const AddText = (project: Project, canvas: fabric.Canvas) => {}
  * @param canvas - The canvas to add the image to
  * @returns Promise<void>
  */
-const addImage = (projectPath: string, imagePath: string, canvas: fabric.Canvas, options: Layer) => {
+const addImage = (projectPath: string, imagePath?: string, canvas?: fabric.Canvas, options?: Layer) => {
+  if (!projectPath || !imagePath) return
+
   return new Promise((resolve, reject) => {
     fabric.Image.fromURL(
       `file://${projectPath}${imagePath}`,
       (oImg: any) => {
         canvas.add(oImg)
-        canvas.renderAll()
+        resolve(canvas.add(oImg))
       },
       options
     )
   })
 }
+
+const drawCard = async (project: Project | undefined, canvas: fabric.Canvas | undefined): void => {
+  if (!project || !canvas) return
+  console.log('drawing card')
+
+  // We render from the bottom up (so layers on the top of the array are on top)
+  const reversedLayers = reverse(clone(project.layers))
+
+  canvas.clear()
+  canvas.setBackgroundColor('white')
+  canvas.setBackgroundImage(cardOverlay)
+
+  await pSeries(
+    map(reversedLayers, (layer: Layer) => {
+      const { type, path, ...options } = layer
+      if (!SUPPORTED_TYPES[type]) {
+        console.warn(`Unsupported type: ${type}`)
+        return () => {}
+      }
+      // Images are different...
+      if (type.match(/^image$/i)) {
+        return () => addImage(project.path, path, canvas, layer)
+      }
+
+      const thing = new fabric[type](options)
+      return () => canvas.add(thing)
+    })
+  )
+
+  // Finally re-render it all (maybe?)
+  // canvas.renderAll()
+}
+
+// eslint-disable-next-line import/prefer-default-export
+export { drawCard }

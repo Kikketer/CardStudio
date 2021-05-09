@@ -22,6 +22,13 @@ export declare interface DeckContextProps {
   project?: Project
 }
 
+export declare interface EditorContextProps {
+  isEditingMaster: boolean
+  setIsEditingMaster: (T: boolean) => void
+  activeLayer: Layer | undefined
+  setActiveLayer: (T: Layer) => void
+}
+
 export declare interface Layer {
   id: string
   type: string
@@ -32,6 +39,12 @@ export declare interface Layer {
   width?: number
   height?: number
   path?: string
+}
+
+export declare interface LayerItem {
+  layer: Layer
+  active?: boolean
+  onClick?: (T: Layer) => void
 }
 
 export declare interface Project {

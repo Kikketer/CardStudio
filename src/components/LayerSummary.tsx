@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { map } from 'lodash'
+import { Layer as LayerType } from './Types'
 import { useDeck } from './Deck.context'
+import Layer from './Layer'
+import { useEditor } from './Editor.context'
 
 const List = styled.ul`
   list-style: none;
@@ -20,20 +23,19 @@ const Line = styled.div`
 `
 
 const LayerSummary = () => {
+  const { activeLayer, setActiveLayer } = useEditor()
   const { project } = useDeck()
 
-  const onEditLayer = () => {
-    // TODO Show modal
+  const makeLayerActive = (layer: LayerType) => {
+    setActiveLayer(layer)
   }
 
   return (
     <>
       <List>
-        {map(project?.layers, (layer: Layer) => (
+        {map(project?.layers, (layer: LayerType) => (
           <Item key={layer.id}>
-            <button type="button" onClick={onEditLayer}>
-              {layer.type}
-            </button>
+            <Layer layer={layer} onClick={makeLayerActive} active={activeLayer?.id === layer.id} />
           </Item>
         ))}
       </List>

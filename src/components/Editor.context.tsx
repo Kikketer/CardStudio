@@ -2,23 +2,33 @@
  * @author Chris Weed (chris@cjweed.com) 2021
  */
 
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useState, useEffect } from 'react'
+import { fabric } from 'fabric-browseronly'
+import { EditorContextProps } from './Types'
 
 type EditorBase = {
   children: ReactNode
-}
-
-type EditorContextProps = {
-  isEditingMaster: boolean
-  setIsEditingMaster: (T: boolean) => void
+  canvas: fabric.Canvas
 }
 
 const EditorContext = createContext<EditorContextProps | null>(null)
 
-const EditorProvider = ({ children }: EditorBase): JSX.Element => {
+const EditorProvider = ({ children, canvas }: EditorBase): JSX.Element => {
   const [isEditingMaster, setIsEditingMaster] = useState<boolean>(false)
+  const [activeLayer, setActiveLayer] = useState<Layer | undefined>()
 
-  return <EditorContext.Provider value={{ isEditingMaster, setIsEditingMaster }}>{children}</EditorContext.Provider>
+  useEffect(() => {
+    console.log('Layer changed ', activeLayer)
+    if (activeLayer) {
+      // TODO...
+    }
+  }, [activeLayer])
+
+  return (
+    <EditorContext.Provider value={{ isEditingMaster, setIsEditingMaster, activeLayer, setActiveLayer }}>
+      {children}
+    </EditorContext.Provider>
+  )
 }
 
 const useEditor = (): EditorContextProps => {
