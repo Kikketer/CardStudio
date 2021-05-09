@@ -2,9 +2,10 @@
  * @author Chris Weed (chris@cjweed.com) 2021
  */
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import { AccordionItem } from 'carbon-components-react'
+import { AccordionItem, TextInput } from 'carbon-components-react'
+import { omit } from 'lodash'
 import { LayerItem } from './Types'
 import { SUPPORTED_TYPES } from './constants'
 
@@ -15,6 +16,40 @@ type ButtonProps = {
 const StyledLayer: any = styled(AccordionItem)`
   background: ${({ active }: ButtonProps) => (active ? 'lightgrey' : 'transparent')};
 `
+
+const EntryLine: any = styled.tr``
+
+const EntryLabel: any = styled.label`
+  display: block;
+  text-align: right;
+  margin-right: 5px;
+`
+
+const getLayerForm = (layer: Layer) => {
+  const entryItems = omit(layer, ['id', 'type'])
+  const result: Array<ReactNode> = []
+  if (Object.keys(entryItems)?.length) {
+    Object.keys(entryItems).reduce((acc, key) => {
+      acc.push(
+        <EntryLine key={key}>
+          <td>
+            <EntryLabel htmlFor={key}>{key}:</EntryLabel>
+          </td>
+          <td>
+            <TextInput id={key} value={entryItems[key]} />
+          </td>
+        </EntryLine>
+      )
+      return acc
+    }, result)
+  }
+
+  return (
+    <table>
+      <tbody>{result}</tbody>
+    </table>
+  )
+}
 
 const Layer = ({ layer, active, onClick }: LayerItem): JSX.Element | null => {
   const whenClicked = () => {
@@ -28,9 +63,14 @@ const Layer = ({ layer, active, onClick }: LayerItem): JSX.Element | null => {
     return null
   }
 
+  /**
+   * For layers, the `id` and `type` are the only two guaranteed
+   * we build the form based on the rest
+   */
+
   return (
     <StyledLayer type="button" onClick={whenClicked} active={active} title={layer.name || layer.type}>
-      <p>{layer.name || layer.type}</p>
+      {getLayerForm(layer)}
     </StyledLayer>
   )
 }

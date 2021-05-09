@@ -22,5 +22,15 @@
       top: 100,
       path: 'art/Tornado.png'
     }
+  ],
+  cards: [
+    {
+      id: 'card-id-1',
+      name: 'Tornado',
+      variables: {
+        title: 'Tornado',
+        image: 'art/Tornado.png'
+      }
+    }
   ]
 }

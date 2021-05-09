@@ -29,10 +29,13 @@ const Detailbar = () => {
               {label} Master
             </Button>
           </ButtonSet>
-          <Select id="card" labelText="Preview">
-            <SelectItem value="card1" text="Tornado" />
-            <SelectItem value="card2" text="Cheese" />
-          </Select>
+          {project?.cards?.length && (
+            <Select id="cards" labelText="Preview">
+              {project.cards.map((card) => (
+                <SelectItem key={card.id} value={card.id} text={card.name} />
+              ))}
+            </Select>
+          )}
           <div>
             <h2 className="bx--label">Layers</h2>
             <LayerSummary />

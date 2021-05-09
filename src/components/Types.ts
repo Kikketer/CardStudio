@@ -46,8 +46,15 @@ export declare interface LayerItem {
   onClick?: (T: Layer) => void
 }
 
+export declare interface Card {
+  id: string
+  name: string
+  variables?: Array<never>
+}
+
 export declare interface Project {
   name: string
   path: string
   layers?: Array<Layer>
+  cards?: Array<Card>
 }
