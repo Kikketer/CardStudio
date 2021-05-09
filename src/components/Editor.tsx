@@ -1,12 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { fabric } from 'fabric-browseronly'
 import bg from '../images/grid.svg'
-import cardOverlay from '../images/usgamedeck.png'
-import { useDeck } from './Deck.context'
-import { drawCard } from './CardGenUtils'
 
 const Container = styled.main`
   // background-image: url(${bg});
@@ -18,45 +15,12 @@ const Container = styled.main`
   padding: 16px;
 `
 
-// TODO Find out why the canvas is 150px high by default
-const StyledEditor = styled.div``
-
 /**
- * The editor
- * DANGER: if this re-renders it will clear the canvas...
- * TODO: Figure out why ;)
+ * The editor.  Check the Deck Context for the logic involved with this <canvas>
  *
  * @constructor
  */
 const Editor = () => {
-  const { project } = useDeck()
-  const canvas = useRef<fabric.Canvas>(null)
-  const zoomFactor = 0.5
-
-  useEffect(() => {
-    canvas.current = new fabric.Canvas('the-card', {
-      margin: 'auto',
-      backgroundColor: 'white',
-      preserveObjectStacking: true,
-      height: 1124 * zoomFactor,
-      width: 750 * zoomFactor,
-    })
-
-    canvas.current.setZoom(zoomFactor)
-  }, [])
-
-  useEffect(() => {
-    console.log('Project path has changed ', project)
-
-    if (project) {
-      drawCard(project, canvas.current)
-
-      canvas.current.setZoom(zoomFactor)
-    }
-  }, [project])
-
-  console.log('Rendering editor ', canvas.current)
-
   return (
     <Container>
       <canvas id="the-card" />

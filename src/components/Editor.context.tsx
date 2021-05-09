@@ -3,18 +3,17 @@
  */
 
 import React, { createContext, ReactNode, useContext, useState, useEffect } from 'react'
-import { fabric } from 'fabric-browseronly'
 import { EditorContextProps } from './Types'
+import { useDeck } from './Deck.context'
 
 type EditorBase = {
   children: ReactNode
-  canvas: fabric.Canvas
 }
 
 const EditorContext = createContext<EditorContextProps | null>(null)
 
-const EditorProvider = ({ children, canvas }: EditorBase): JSX.Element => {
-  const [isEditingMaster, setIsEditingMaster] = useState<boolean>(false)
+const EditorProvider = ({ children }: EditorBase): JSX.Element => {
+  const [isEditingMaster, setIsEditingMaster] = useState<boolean>(true)
   const [activeLayer, setActiveLayer] = useState<Layer | undefined>()
 
   useEffect(() => {

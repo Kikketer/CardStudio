@@ -2,8 +2,9 @@
  * @author Chris Weed (chris@cjweed.com) 2021
  */
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+import { AccordionItem } from 'carbon-components-react'
 import { LayerItem } from './Types'
 import { SUPPORTED_TYPES } from './constants'
 
@@ -11,16 +12,8 @@ type ButtonProps = {
   active: boolean
 }
 
-const StyledLayer: any = styled.button`
-  width: 100%;
-  border: 0;
-  padding: 5px;
-  background: ${({ active }: ButtonProps) => (active ? 'orange' : 'transparent')};
-  text-align: left;
-
-  p {
-    margin: 0;
-  }
+const StyledLayer: any = styled(AccordionItem)`
+  background: ${({ active }: ButtonProps) => (active ? 'lightgrey' : 'transparent')};
 `
 
 const Layer = ({ layer, active, onClick }: LayerItem): JSX.Element | null => {
@@ -36,7 +29,7 @@ const Layer = ({ layer, active, onClick }: LayerItem): JSX.Element | null => {
   }
 
   return (
-    <StyledLayer type="button" onClick={whenClicked} active={active}>
+    <StyledLayer type="button" onClick={whenClicked} active={active} title={layer.name || layer.type}>
       <p>{layer.name || layer.type}</p>
     </StyledLayer>
   )

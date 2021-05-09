@@ -15,11 +15,10 @@ export declare interface LoadProjectProps {
 }
 
 export declare interface DeckContextProps {
-  layers: Layer[]
-  canvas: fabric.Canvas | null
-  zoomFactor: number
-  loadProject: (T: LoadProjectProps) => void
   project?: Project
+  zoomFactor: number
+  setZoomFactor: (factor: number) => void
+  loadProject: (project: LoadProjectProps) => void
 }
 
 export declare interface EditorContextProps {
