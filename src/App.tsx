@@ -7,11 +7,11 @@ import { EditorProvider } from './components/Editor.context'
 
 const Frame = () => {
   return (
-    <DeckProvider>
-      <EditorProvider>
+    <EditorProvider>
+      <DeckProvider>
         <Main />
-      </EditorProvider>
-    </DeckProvider>
+      </DeckProvider>
+    </EditorProvider>
   )
 }
 

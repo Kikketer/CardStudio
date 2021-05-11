@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, SelectItem, ButtonSet, Button } from 'carbon-components-react'
+import { Select, SelectItem } from 'carbon-components-react'
 import styled from 'styled-components'
 import LayerSummary from './LayerSummary'
 import { useEditor } from './Editor.context'

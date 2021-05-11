@@ -224,6 +224,7 @@
   },
   "dependencies": {
     "@carbon/icons-react": "10.22.0",
+    "@carbon/themes": "^10.33.0",
     "caniuse-lite": "^1.0.30001223",
     "carbon-components": "10.25.0",
     "carbon-components-react": "7.25.0",

@@ -19,14 +19,13 @@ export declare interface DeckContextProps {
   zoomFactor: number
   setZoomFactor: (factor: number) => void
   loadProject: (project: LoadProjectProps) => void
-  selectLayerById: (layerId: string) => void
+  currentLayerId: string | undefined
+  setCurrentLayerId: (layerId: string) => void
 }
 
 export declare interface EditorContextProps {
   isEditingMaster: boolean
   setIsEditingMaster: (T: boolean) => void
-  activeLayer: Layer | undefined
-  setActiveLayer: (T: Layer) => void
 }
 
 export declare interface Layer {

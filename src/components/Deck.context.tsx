@@ -1,12 +1,10 @@
 import React, { useContext, ReactNode, useState, useRef, useEffect } from 'react'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { fabric } from 'fabric-browseronly'
 import json5 from 'json5'
-import { find } from 'lodash'
+import { find, cloneDeep, map } from 'lodash'
 import { IEvent } from 'fabric/fabric-impl'
-import { DeckContextProps, Project, LoadProjectProps } from './Types'
-import { drawCard } from './CardGenUtils'
+import { drawCard } from '../utilities/CardGenUtils'
+import { DeckContextProps, Project, LoadProjectProps, Layer } from '../utilities/Types'
 
 export declare interface ActionProps {
   children: ReactNode
@@ -18,6 +16,27 @@ const DeckProvider = ({ children }: ActionProps) => {
   const canvas = useRef<fabric.Canvas | undefined>()
   const [zoomFactor, setZoomFactor] = useState(0.5)
   const [project, setProject] = useState<Project | undefined>()
+  const [currentLayerId, setCurrentLayerId] = useState<string | undefined>(undefined)
+
+  const onUpdateLayer = (event: any, p?: Project) => {
+    const layerObject = event.target
+    console.log('object updated---', layerObject, project, p)
+    const modifiedId: string = layerObject?.id || ''
+    const layers: Array<Layer> = map(cloneDeep(project?.layers || []), (layer: Layer) => {
+      if (layer.id === modifiedId) {
+        return {}
+      }
+      return layer
+    })
+
+    const resultingProject: Project = { ...project, layers }
+    console.log('Result? ', resultingProject)
+    // setProject(resultingProject)
+  }
+
+  useEffect(() => {
+    console.log('Project has changed ', project)
+  }, [project])
 
   useEffect(() => {
     canvas.current = new fabric.Canvas('the-card', {
@@ -34,22 +53,27 @@ const DeckProvider = ({ children }: ActionProps) => {
     canvas.current.on('selection:created', (c: IEvent) => console.log('selection created---', c.target))
     canvas.current.on('selection:updated', (c: IEvent) => console.log('selection updated---', c.target))
     canvas.current.on('selection:cleared', (c: IEvent) => console.log('selection cleared---', c.target))
-    canvas.current.on('object:modified', (c: IEvent) => console.log('object updated---', c.target))
+    canvas.current.on('object:modified', (e: IEvent) => onUpdateLayer(e, project))
 
     // TODO set zoomFactor in a different useEffect
     canvas.current.setZoom(zoomFactor)
+
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (project) {
-      drawCard(project, canvas.current)
-    }
-  }, [project])
-
-  useEffect(() => {
     // TODO
   }, [zoomFactor])
+
+  useEffect(() => {
+    console.log('Current Layer ID changed ', currentLayerId)
+    if (currentLayerId) {
+      const foundObject = find(canvas.current.getObjects(), { id: currentLayerId })
+      canvas.current.setActiveObject(foundObject)
+    } else {
+      canvas.current.discardActiveObject()
+    }
+  }, [currentLayerId])
 
   const loadProject = ({ path, content }: LoadProjectProps) => {
     setProject(undefined)
@@ -59,22 +83,14 @@ const DeckProvider = ({ children }: ActionProps) => {
     const p: Project = json5.parse(content)
     p.path = path
     setProject(p)
-  }
 
-  const selectLayerById = (id: string) => {
-    console.log('selecting layer ', id)
-    // const foundObject = find(canvas.current.getObjects(), { id })
-    const foundObject = canvas.current.getObjects().find((obj: any) => obj.id === id)
-    if (foundObject) {
-      // TODO Figure out why it won't show the selection: https://jsfiddle.net/Kikketer/ncgs784p/
-      // It's even firing the event...
-      canvas.current.setActiveObject(foundObject)
-      // discardActiveObject() << to deselect
-    }
+    drawCard(p, canvas.current)
   }
 
   return (
-    <DeckContext.Provider value={{ project, zoomFactor, setZoomFactor, loadProject, selectLayerById }}>
+    <DeckContext.Provider
+      value={{ project, zoomFactor, setZoomFactor, loadProject, currentLayerId, setCurrentLayerId }}
+    >
       {children}
     </DeckContext.Provider>
   )

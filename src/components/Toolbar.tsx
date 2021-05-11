@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-// import { ipcRenderer } from 'electron'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { fabric } from 'fabric-browseronly'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { changeDpiDataUrl } from 'changedpi'
 import { Button } from 'carbon-components-react'
 import { Cursor_132, TextCreation32, Image32 } from '@carbon/icons-react'
-// import { useDeck } from './Deck.context'
 
 type ToolbarButtonProps = {
   active?: boolean

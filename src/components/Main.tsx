@@ -2,15 +2,15 @@
  * @author Chris Weed (chris@cjweed.com) 2021
  */
 
-import React, { ReactNode } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Header, HeaderName, HeaderContainer, Button } from 'carbon-components-react'
-import { Folder32, Save32 } from '@carbon/icons-react'
+import { Folder32, Save32, Export32 } from '@carbon/icons-react'
 import Toolbar from './Toolbar'
 import Editor from './Editor'
 import DetailBar from './Detailbar'
 import { useDeck } from './Deck.context'
-import { openProject } from './NativeUtils'
+import { openProject } from '../utilities/NativeUtils'
 
 const Grid = styled.div`
   display: grid;
@@ -31,6 +31,11 @@ const Main = (): JSX.Element => {
 
   const onOpenProject = () => {
     openProject(loadProject)
+  }
+
+  const onExportDeck = () => {
+    // TODO
+    console.log('Exporting deck')
   }
 
   return (
@@ -55,6 +60,9 @@ const Main = (): JSX.Element => {
               iconDescription="open project"
               onClick={onOpenProject}
             />
+            <Button kind="secondary" onClick={onExportDeck} renderIcon={Export32}>
+              Generate Deck
+            </Button>
           </Header>
         )}
       />

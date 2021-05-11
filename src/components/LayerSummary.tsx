@@ -1,49 +1,34 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { map } from 'lodash'
-import { Accordion, AccordionItem } from 'carbon-components-react'
+import { Accordion } from 'carbon-components-react'
 import { useForm } from 'react-hook-form'
-import { Layer as LayerType } from './Types'
+import { Layer as LayerType } from '../utilities/types'
 import { useDeck } from './Deck.context'
 import Layer from './Layer'
-import { useEditor } from './Editor.context'
 
 const List = styled.div`
   list-style: none;
 `
 
-const Item = styled.div`
-  border-bottom: 1px solid var(--border);
-`
-
-const Line = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid grey;
-`
-
 const LayerSummary = () => {
-  const { activeLayer, setActiveLayer } = useEditor()
-  const { project, selectLayerById } = useDeck()
+  const { project, currentLayerId, setCurrentLayerId } = useDeck()
   const { handleSubmit, register } = useForm()
 
   const makeLayerActive = (layer: LayerType) => {
-    setActiveLayer(layer)
-    selectLayerById(layer.id)
+    setCurrentLayerId(layer.id)
   }
 
-  const onSave = (data: any) => {
+  const onLayerSubmit = (data: any) => {
     console.log('saving ', data)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSave)}>
+    <form onSubmit={handleSubmit(onLayerSubmit)}>
       <List>
         {map(project?.layers, (layer: LayerType) => (
           <Accordion key={layer.id}>
-            <Layer layer={layer} onClick={makeLayerActive} active={activeLayer?.id === layer.id} register={register} />
+            <Layer layer={layer} onClick={makeLayerActive} active={currentLayerId === layer.id} register={register} />
           </Accordion>
         ))}
       </List>

@@ -6,17 +6,9 @@ import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { AccordionItem, TextInput } from 'carbon-components-react'
 import { omit } from 'lodash'
-import { useForm } from 'react-hook-form'
-import { LayerItem } from './Types'
-import { SUPPORTED_TYPES } from './constants'
-
-type ButtonProps = {
-  isActive: boolean
-}
-
-const StyledLayer: any = styled(AccordionItem)`
-  background: ${({ isActive }: ButtonProps) => (isActive ? 'lightgrey' : 'transparent')};
-`
+import { danger01 } from '@carbon/themes'
+import { LayerItem } from '../utilities/types'
+import { SUPPORTED_TYPES } from '../utilities/constants'
 
 const EntryLine: any = styled.tr``
 
@@ -24,6 +16,10 @@ const EntryLabel: any = styled.label`
   display: block;
   text-align: right;
   margin-right: 5px;
+`
+
+const Error = styled.p`
+  color: ${danger01};
 `
 
 const getLayerForm = (layer: Layer, register: (T: string) => void) => {
@@ -53,27 +49,33 @@ const getLayerForm = (layer: Layer, register: (T: string) => void) => {
   )
 }
 
-const Layer = ({ layer, active, onClick, register }: LayerItem): JSX.Element | null => {
+const Layer = ({ layer, onClick, register }: LayerItem): JSX.Element | null => {
   const whenClicked = () => {
     // TS-BS: told me to do default props, but can't use it here
-    if (onClick) {
+    if (onClick && SUPPORTED_TYPES[layer.type]) {
       onClick(layer)
     }
-  }
-
-  if (!SUPPORTED_TYPES[layer.type]) {
-    return null
   }
 
   /**
    * For layers, the `id` and `type` are the only two guaranteed
    * we build the form based on the rest
    */
-
   return (
-    <StyledLayer onClick={whenClicked} isActive={active} title={layer.name || layer.type}>
+    <AccordionItem
+      onClick={whenClicked}
+      title={`${layer.name || layer.type}${!SUPPORTED_TYPES[layer.type] ? ` ⚠️` : ''}`}
+    >
       {getLayerForm(layer, register)}
-    </StyledLayer>
+      {!SUPPORTED_TYPES[layer.type] && (
+        <Error>
+          <span role="img" aria-label="warning">
+            ⚠️
+          </span>{' '}
+          Invalid Type
+        </Error>
+      )}
+    </AccordionItem>
   )
 }
 
