@@ -12,9 +12,15 @@ type EditorBase = {
 const EditorContext = createContext<EditorContextProps | null>(null)
 
 const EditorProvider = ({ children }: EditorBase): JSX.Element => {
+  const [scale, setScale] = useState<number>(0.5)
+  const [showGuides, setShowGuides] = useState<boolean>(true)
   const [isEditingMaster, setIsEditingMaster] = useState<boolean>(true)
 
-  return <EditorContext.Provider value={{ isEditingMaster, setIsEditingMaster }}>{children}</EditorContext.Provider>
+  return (
+    <EditorContext.Provider value={{ isEditingMaster, setIsEditingMaster, showGuides, setShowGuides, scale, setScale }}>
+      {children}
+    </EditorContext.Provider>
+  )
 }
 
 const useEditor = (): EditorContextProps => {

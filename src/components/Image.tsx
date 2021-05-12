@@ -8,12 +8,13 @@ import useImage from 'use-image'
 
 type ImageProps = {
   url: string
+  draggable: boolean
 }
 
-const Img = ({ url }: ImageProps): JSX.Element => {
+const Img = ({ url, draggable = true }: ImageProps): JSX.Element => {
   const [image] = useImage(url)
 
-  return <Image image={image} />
+  return <Image image={image} draggable={draggable} />
 }
 
 Img.displayName = 'Image'

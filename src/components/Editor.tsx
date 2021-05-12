@@ -3,11 +3,14 @@ import styled from 'styled-components'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { fabric } from 'fabric-browseronly'
-import { Layer, Rect, Stage } from 'react-konva'
+import { Layer, Stage } from 'react-konva'
 import bg from '../images/grid.svg'
 import { useDeck } from './Deck.context'
 import { Layer as LayerType } from '../utilities/Types'
-import ComponentRegistry, { getPropsForComponent } from '../utilities/ComponentRegistry'
+import ComponentRegistry from '../utilities/ComponentRegistry'
+import Image from './Image'
+import deckImage from '../images/usgamedeck.png'
+import { useEditor } from './Editor.context'
 
 const Container = styled.main`
   // background-image: url(${bg});
@@ -20,19 +23,21 @@ const Container = styled.main`
 `
 
 const Editor = () => {
+  const { showGuides, scale } = useEditor()
   const { project } = useDeck()
+
+  const size = {
+    width: 750 * scale,
+    height: 1125 * scale,
+  }
 
   return (
     <Container>
       {project && (
-        <Stage width={720} height={1124}>
+        <Stage width={size.width} height={size.height} scale={{ x: scale, y: scale }}>
+          <Layer>{showGuides && <Image url={deckImage} draggable={false} />}</Layer>
           {project?.layers?.map((layer: LayerType) => {
-            return (
-              <Layer key={layer.id}>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                {ComponentRegistry(project, layer)}
-              </Layer>
-            )
+            return <Layer key={layer.id}>{ComponentRegistry(project, layer)}</Layer>
           })}
         </Stage>
       )}

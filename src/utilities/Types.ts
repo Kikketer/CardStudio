@@ -26,6 +26,10 @@ export declare interface DeckContextProps {
 export declare interface EditorContextProps {
   isEditingMaster: boolean
   setIsEditingMaster: (T: boolean) => void
+  showGuides: boolean
+  setShowGuides: (T: boolean) => void
+  scale: number
+  setScale: (T: number) => void
 }
 
 export declare interface Layer {

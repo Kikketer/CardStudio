@@ -10,6 +10,10 @@ type ComponentMapType = {
   [T: string]: any
 }
 
+const commonProps = {
+  draggable: true,
+}
+
 const componentMap: ComponentMapType = {
   Image,
   Rect,
@@ -44,7 +48,7 @@ const Component = (project: Project, layer: Layer) => {
   const Comp = componentMap[layer.type]
   const props = getPropsForComponent(project, layer)
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Comp {...props} />
+  return <Comp {...commonProps} {...props} />
 }
 
 Component.displayName = 'Component'

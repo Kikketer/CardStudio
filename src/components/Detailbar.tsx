@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, SelectItem } from 'carbon-components-react'
+import { Select, SelectItem, Toggle } from 'carbon-components-react'
 import styled from 'styled-components'
 import LayerSummary from './LayerSummary'
 import { useEditor } from './Editor.context'
@@ -13,7 +13,7 @@ const Aside = styled.aside`
 
 const Detailbar = () => {
   const { project } = useDeck()
-  const { isEditingMaster, setIsEditingMaster } = useEditor()
+  const { isEditingMaster, setIsEditingMaster, showGuides, setShowGuides } = useEditor()
 
   const label = isEditingMaster ? 'Save' : 'Edit'
 
@@ -29,6 +29,15 @@ const Detailbar = () => {
           {/*    {label} Master */}
           {/*  </Button> */}
           {/* </ButtonSet> */}
+          <div>
+            <Toggle
+              labelText="Show Guides"
+              id="show-guides"
+              size="sm"
+              defaultToggled={showGuides}
+              onToggle={setShowGuides}
+            />
+          </div>
           {project?.cards?.length && (
             <Select id="cards" labelText="Preview">
               {project.cards.map((card) => (
