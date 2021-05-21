@@ -1,8 +1,8 @@
 /**
  * @author Chris Weed (chris@cjweed.com) 2021
  */
-import React from 'react'
-import { Rect } from 'react-konva'
+import React, { useRef } from 'react'
+import { Rect, Transformer } from 'react-konva'
 import Image from '../components/Image'
 import { Layer, Project } from './Types'
 

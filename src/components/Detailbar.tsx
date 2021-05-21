@@ -29,15 +29,6 @@ const Detailbar = () => {
           {/*    {label} Master */}
           {/*  </Button> */}
           {/* </ButtonSet> */}
-          <div>
-            <Toggle
-              labelText="Show Guides"
-              id="show-guides"
-              size="sm"
-              defaultToggled={showGuides}
-              onToggle={setShowGuides}
-            />
-          </div>
           {project?.cards?.length && (
             <Select id="cards" labelText="Preview">
               {project.cards.map((card) => (
@@ -48,6 +39,15 @@ const Detailbar = () => {
           <div>
             <h2 className="bx--label">Layers</h2>
             <LayerSummary />
+          </div>
+          <div>
+            <Toggle
+              labelText="Show Guides"
+              id="show-guides"
+              size="sm"
+              defaultToggled={showGuides}
+              onToggle={setShowGuides}
+            />
           </div>
         </>
       )}
