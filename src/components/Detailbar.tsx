@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, SelectItem, Toggle } from 'carbon-components-react'
+import { Select, SelectItem, Toggle, ButtonSet, Button } from 'carbon-components-react'
 import styled from 'styled-components'
 import LayerSummary from './LayerSummary'
 import { useEditor } from './Editor.context'
@@ -19,7 +19,7 @@ const Detailbar = () => {
 
   return (
     <Aside>
-      {project?.layers?.length && (
+      {project?.items?.length && (
         <>
           {/* <ButtonSet> */}
           {/*  <Button */}

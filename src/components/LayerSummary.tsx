@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { map } from 'lodash'
 import { Accordion } from 'carbon-components-react'
 import { useForm } from 'react-hook-form'
-import { Layer as LayerType } from '../utilities/types'
+import { Item, Layer as LayerType } from '../utilities/types'
 import { useDeck } from './Deck.context'
 import Layer from './Layer'
 
@@ -12,11 +12,11 @@ const List = styled.div`
 `
 
 const LayerSummary = () => {
-  const { project, currentLayerId, setCurrentLayerId } = useDeck()
+  const { project, setSelectedItemId, selectedItemId } = useDeck()
   const { handleSubmit, register } = useForm()
 
-  const makeLayerActive = (layer: LayerType) => {
-    setCurrentLayerId(layer.id)
+  const makeLayerActive = (item: Item) => {
+    setSelectedItemId(item.id)
   }
 
   const onLayerSubmit = (data: any) => {
@@ -26,9 +26,9 @@ const LayerSummary = () => {
   return (
     <form onSubmit={handleSubmit(onLayerSubmit)}>
       <List>
-        {map(project?.layers, (layer: LayerType) => (
+        {map(project?.items, (layer: LayerType) => (
           <Accordion key={layer.id}>
-            <Layer layer={layer} onClick={makeLayerActive} active={currentLayerId === layer.id} register={register} />
+            <Layer layer={layer} onClick={makeLayerActive} active={selectedItemId === layer.id} register={register} />
           </Accordion>
         ))}
       </List>

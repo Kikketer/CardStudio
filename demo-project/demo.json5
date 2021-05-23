@@ -1,6 +1,6 @@
 {
   name: 'Demo Deck',
-  layers: [
+  items: [
 //    {
 //      id: 'layer0',
 //      type: 'Text',
