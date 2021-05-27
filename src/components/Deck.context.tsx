@@ -8,7 +8,7 @@ export declare interface ActionProps {
 
 const mockProject = {
   name: 'Demo Deck',
-  width: 720,
+  width: 750,
   height: 1125,
   items: [
     { id: 'layer1', type: 'Rect', left: 100, top: 100, fill: 'red', width: 50, height: 50 },
@@ -22,7 +22,6 @@ const mockProject = {
 const DeckContext = React.createContext({} as DeckContextProps)
 
 const DeckProvider = ({ children }: ActionProps) => {
-  // const canvas = useRef<fabric.Canvas | undefined>()
   const [zoomFactor, setZoomFactor] = useState(0.5)
   const [project, setProject] = useState<Project | undefined>(mockProject)
   const [selectedItemId, setSelectedItemId] = useState<string | undefined>(undefined)
@@ -30,10 +29,6 @@ const DeckProvider = ({ children }: ActionProps) => {
   useEffect(() => {
     // TODO
   }, [zoomFactor])
-
-  useEffect(() => {
-    console.log(JSON.stringify(project))
-  }, [project])
 
   const loadProject = ({ path, content }: LoadProjectProps) => {
     setProject(undefined)

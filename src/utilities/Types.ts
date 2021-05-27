@@ -41,6 +41,7 @@ export declare interface Item {
   fill?: string
   width?: number
   height?: number
+  path?: string // Only used for Images, but TS is bullshit
 }
 
 export declare interface Card {

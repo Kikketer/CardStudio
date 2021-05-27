@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { AccordionItem, TextInput } from 'carbon-components-react'
 import { omit } from 'lodash'
 import { danger01 } from '@carbon/themes'
-import { LayerItem } from '../utilities/types'
+import { Item } from '../utilities/types'
 import { SUPPORTED_TYPES } from '../utilities/constants'
 
 const EntryLine: any = styled.tr``
@@ -22,9 +22,10 @@ const Error = styled.p`
   color: ${danger01};
 `
 
-const getLayerForm = (layer: Layer, register: (T: string) => void) => {
+const getLayerForm = (layer: Item, register: (T: string) => void, onSubmit: (e: any) => void = () => {}) => {
   const entryItems = omit(layer, ['id', 'type'])
   const result: Array<ReactNode> = []
+
   if (Object.keys(entryItems)?.length) {
     Object.keys(entryItems).reduce((acc, key) => {
       acc.push(
@@ -33,8 +34,14 @@ const getLayerForm = (layer: Layer, register: (T: string) => void) => {
             <EntryLabel htmlFor={key}>{key}:</EntryLabel>
           </td>
           <td>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <TextInput defaultValue={entryItems[key]} labelText="" id={key} {...register(`${layer.id}-${key}`)} />
+            <TextInput
+              defaultValue={entryItems[key]}
+              labelText=""
+              id={key}
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...register(`${layer.id}-${key}`)}
+              onBlur={onSubmit}
+            />
           </td>
         </EntryLine>
       )
