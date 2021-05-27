@@ -41,25 +41,19 @@ export declare interface Item {
   fill?: string
   width?: number
   height?: number
-  path?: string
 }
-
-// export declare interface LayerItem {
-//   layer: Layer
-//   active?: boolean
-//   onClick?: (T: Layer) => void
-//   register: (T: string) => void
-// }
 
 export declare interface Card {
   id: string
   name: string
-  variables?: Array<never>
+  variables?: { [key: string]: string | number | boolean }
 }
 
 export declare interface Project {
   name: string
   path: string
+  width: number
+  height: number
   items?: Array<Item>
   cards?: Array<Card>
 }

@@ -39,7 +39,7 @@ const getPropsForComponent = (project: Project, item: Item) => {
       return {
         x: item.left,
         y: item.top,
-        url: `file://${project.path}${item.path}`,
+        path: `file://${project.path}${item.path}`,
       }
     default:
       return {

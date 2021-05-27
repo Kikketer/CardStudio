@@ -3,12 +3,11 @@ import styled from 'styled-components'
 import { Stage, Layer } from 'react-konva'
 import bg from '../images/grid.svg'
 import { useDeck } from './Deck.context'
-import { Layer as LayerType } from '../utilities/Types'
 import ComponentRegistry from '../utilities/ComponentRegistry'
 import Image from './Image'
 import deckImage from '../images/usgamedeck.png'
 import { useEditor } from './Editor.context'
-import TransformableLayer from './TransformableLayer'
+import { Item } from '../utilities/Types'
 
 const Container = styled.main`
   background-image: url(${bg});
@@ -28,11 +27,6 @@ const WhiteCardStage = styled(Stage)`
 const Editor = () => {
   const { showGuides, scale } = useEditor()
   const { project, selectedItemId, setSelectedItemId } = useDeck()
-
-  const size = {
-    width: 750 * scale,
-    height: 1125 * scale,
-  }
 
   const checkDeselect = (e: any) => {
     const clickedOnEmpty = e.target === e.target.getStage()
@@ -54,21 +48,27 @@ const Editor = () => {
 
   return (
     <Container data-type="backdrop" onClick={onClickBackdrop}>
-      <p>Selected: {selectedItemId}</p>
       {project && (
         <WhiteCardStage
-          width={size.width}
-          height={size.height}
+          width={project.width * scale}
+          height={project.height * scale}
           scale={{ x: scale, y: scale }}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
         >
           <Layer>
             {showGuides && (
-              <Image onClick={onClickTemplate} onTap={onClickTemplate} url={deckImage} draggable={false} />
+              <Image
+                id="backdrop-template"
+                type="Image"
+                onClick={onClickTemplate}
+                onTap={onClickTemplate}
+                path={deckImage}
+                draggable={false}
+              />
             )}
           </Layer>
-          {project?.items?.map((item: LayerType) => {
+          {project?.items?.map((item: Item) => {
             return (
               <Layer key={item.id}>
                 {ComponentRegistry(project, item, {

@@ -5,19 +5,23 @@
 import React from 'react'
 import { Image } from 'react-konva'
 import useImage from 'use-image'
+import { Item } from '../utilities/Types'
 
 type ImageProps = {
-  url: string
-  draggable: boolean
+  path: string
+  draggable?: boolean
   onClick?: (e: any) => void
   onTap?: (e: any) => void
 }
 
-const Img = ({ url, draggable = true, onClick = () => {}, onTap = () => {} }: ImageProps): JSX.Element => {
-  const [image] = useImage(url)
+const Img = React.forwardRef(
+  ({ path, draggable = true, ...rest }: ImageProps & Item, ref: any): JSX.Element => {
+    const [image] = useImage(path)
 
-  return <Image image={image} draggable={draggable} onClick={onClick} onTap={onTap} />
-}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <Image ref={ref} image={image} draggable={draggable} {...rest} />
+  }
+)
 
 Img.displayName = 'Image'
 

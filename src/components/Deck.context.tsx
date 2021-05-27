@@ -7,19 +7,16 @@ export declare interface ActionProps {
 }
 
 const mockProject = {
-  name: 'Mock Project',
-  path: '', // This is normally injected
+  name: 'Demo Deck',
+  width: 720,
+  height: 1125,
   items: [
-    {
-      id: 'layer1',
-      type: 'Rect',
-      left: 100,
-      top: 100,
-      fill: 'red',
-      width: 50,
-      height: 50,
-    },
+    { id: 'layer1', type: 'Rect', left: 100, top: 100, fill: 'red', width: 50, height: 50 },
+    { id: 'layer4', type: 'Rect', left: 10, top: 10, fill: 'blue', width: 50, height: 50 },
+    { id: 'layer3', type: 'Image', left: 100, top: 100, path: 'art/Tornado.png' },
   ],
+  cards: [{ id: 'card-id-1', name: 'Tornado', variables: { title: 'Tornado', image: 'art/Tornado.png' } }],
+  path: '/Users/chris/Documents/CardStudio/demo-project/',
 }
 
 const DeckContext = React.createContext({} as DeckContextProps)
@@ -33,6 +30,10 @@ const DeckProvider = ({ children }: ActionProps) => {
   useEffect(() => {
     // TODO
   }, [zoomFactor])
+
+  useEffect(() => {
+    console.log(JSON.stringify(project))
+  }, [project])
 
   const loadProject = ({ path, content }: LoadProjectProps) => {
     setProject(undefined)
