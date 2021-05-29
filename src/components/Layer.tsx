@@ -10,6 +10,13 @@ import { danger01 } from '@carbon/themes'
 import { Item } from '../utilities/types'
 import { SUPPORTED_TYPES } from '../utilities/constants'
 
+type LayerProps = {
+  layer: Item
+  onClick?: (e: any) => void
+  register: () => void
+  active?: boolean
+}
+
 const EntryLine: any = styled.tr``
 
 const EntryLabel: any = styled.label`
@@ -56,7 +63,7 @@ const getLayerForm = (layer: Item, register: (T: string) => void, onSubmit: (e: 
   )
 }
 
-const Layer = ({ layer, onClick, register }: LayerItem): JSX.Element | null => {
+const Layer = ({ layer, onClick, register, active = false }: LayerProps): JSX.Element | null => {
   const whenClicked = () => {
     // TS-BS: told me to do default props, but can't use it here
     if (onClick && SUPPORTED_TYPES[layer.type]) {
@@ -71,6 +78,7 @@ const Layer = ({ layer, onClick, register }: LayerItem): JSX.Element | null => {
   return (
     <AccordionItem
       onClick={whenClicked}
+      open={active}
       title={`${layer.name || layer.type}${!SUPPORTED_TYPES[layer.type] ? ` ⚠️` : ''}`}
     >
       {getLayerForm(layer, register)}
