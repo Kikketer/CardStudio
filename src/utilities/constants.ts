@@ -6,4 +6,5 @@
 export const SUPPORTED_TYPES: any = {
   Image: {},
   Rect: {},
+  Text: {},
 }

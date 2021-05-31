@@ -11,9 +11,20 @@ const mockProject = {
   width: 750,
   height: 1125,
   items: [
-    { id: 'layer1', type: 'Rect', left: 100, top: 100, fill: 'red', width: 50, height: 50 },
-    { id: 'layer4', type: 'Rect', left: 10, top: 10, fill: 'blue', width: 50, height: 50 },
-    { id: 'layer3', type: 'Image', left: 100, top: 100, path: 'art/Tornado.png' },
+    { id: 'layer1', type: 'Rect', x: 100, y: 100, fill: 'red', width: 50, height: 50 },
+    { id: 'layer4', type: 'Rect', x: 400, y: 400, fill: 'blue', width: 50, height: 50 },
+    { id: 'layer3', type: 'Image', x: 100, y: 100, path: 'art/Tornado.png' },
+    {
+      id: 'text1',
+      type: 'Text',
+      x: 0,
+      y: 500,
+      width: 100,
+      height: 150,
+      wrap: true,
+      text:
+        'This is a test of the text that can be super long so it should wrap naturally with the size of the text box',
+    },
   ],
   cards: [{ id: 'card-id-1', name: 'Tornado', variables: { title: 'Tornado', image: 'art/Tornado.png' } }],
   path: '/Users/chris/Documents/CardStudio/demo-project/',
