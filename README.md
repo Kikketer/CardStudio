@@ -1,5 +1,7 @@
 # Card Studio
 
+**NOTE:** Development on this app is slightly paused since it no longer runs on my laptop due to OS upgrades. I'll visit this again in the near future!
+
 My goal is to create a desktop application that helps me build, design, and generate printable sheets for card games.
 
 ## Immediate Goals
@@ -10,7 +12,7 @@ My goal is to create a desktop application that helps me build, design, and gene
 4. Automatically save the cards
 5. Generate PnP pages
 
-There will be 2 files per deck.  One of which is the templates that defines the layers and items related to that deck.
+There will be 2 files per deck. One of which is the templates that defines the layers and items related to that deck.
 
 The second file is the actual data for each card.
 
@@ -26,7 +28,7 @@ The second file is the actual data for each card.
       offsetX: 10,
       offsetY: 10,
       align: 'center',
-      gravity: 'center'
+      gravity: 'center',
     },
     {
       type: 'Image',
@@ -34,9 +36,9 @@ The second file is the actual data for each card.
       offsetX: '{{offsetX}}',
       offsetY: 10,
       align: 'center',
-      gravity: 'center'
-    }
-  ]
+      gravity: 'center',
+    },
+  ],
 }
 ```
 
@@ -47,8 +49,8 @@ The second file is the actual data for each card.
   {
     title: 'Some title',
     offsetX: 15,
-    url: './some/local/dir/image.png'
-  }
+    url: './some/local/dir/image.png',
+  },
 ]
 ```
 
